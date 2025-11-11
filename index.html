@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Strength Checker</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Password Strength Checker 🔐</h1>
+
+    <form method="POST" action="/">
+      <div class="input-container">
+        <input type="password" name="password" id="password" placeholder="Enter your password..." required>
+        <button type="submit">Check</button>
+      </div>
+    </form>
+
+    {% if strength is not none %}
+    <div class="result">
+      <h2 style="color: {{ color }}">{{ level }}</h2>
+      <ul class="criteria-list">
+        <li class="{{ 'met' if criteria.length else 'not-met' }}">
+          {{ "✅" if criteria.length else "❌" }} Minimum 8 characters
+        </li>
+        <li class="{{ 'met' if criteria.uppercase else 'not-met' }}">
+          {{ "✅" if criteria.uppercase else "❌" }} At least one uppercase letter
+        </li>
+        <li class="{{ 'met' if criteria.lowercase else 'not-met' }}">
+          {{ "✅" if criteria.lowercase else "❌" }} At least one lowercase letter
+        </li>
+        <li class="{{ 'met' if criteria.number else 'not-met' }}">
+          {{ "✅" if criteria.number else "❌" }} At least one number
+        </li>
+        <li class="{{ 'met' if criteria.special else 'not-met' }}">
+          {{ "✅" if criteria.special else "❌" }} At least one special character (@$!%*?&#)
+        </li>
+      </ul>
+
+      {% if suggestions %}
+      <div class="suggestions">
+        <h3>Suggestions to improve:</h3>
+        <ul>
+          {% for s in suggestions %}
+          <li>{{ s }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% else %}
+      <h3 class="perfect">Perfect Password! 🔥</h3>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
